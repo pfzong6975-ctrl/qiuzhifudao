@@ -1,0 +1,263 @@
+/* ============ Setup ============ */
+.interview-page { animation: fadeIn 0.3s ease; }
+
+.setup-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+
+.form-group { margin-bottom: 24px; }
+
+.option-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+.option-row.small { grid-template-columns: repeat(2, 1fr); }
+
+.option-btn {
+  padding: 16px 14px; border: 2px solid var(--border);
+  border-radius: var(--radius); background: var(--surface);
+  cursor: pointer; transition: all var(--transition);
+  text-align: center; display: flex; flex-direction: column; gap: 4px;
+}
+.option-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+.option-btn.active { border-color: var(--primary); background: var(--primary-light); }
+
+.opt-icon { font-size: 22px; }
+.opt-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.opt-desc { font-size: 11px; color: var(--text-muted); }
+
+.range-input {
+  width: 100%; margin-top: 8px; -webkit-appearance: none;
+  height: 6px; background: var(--border); border-radius: 3px; outline: none; cursor: pointer;
+}
+.range-input::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: var(--shadow); }
+.range-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.start-btn { width: 100%; }
+
+/* Setup description */
+.setup-desc h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+.flow-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+.flow-item { display: flex; gap: 14px; align-items: flex-start; }
+.flow-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.flow-item p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; padding-top: 4px; }
+.setup-tip { padding: 14px; background: var(--primary-light); border-radius: var(--radius); font-size: 13px; line-height: 1.6; }
+
+/* ============ Interview Active ============ */
+.interview-topbar { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
+.interview-progress-info { flex: 1; }
+.prog-text { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.interview-tag {
+  padding: 6px 16px; background: var(--primary-light);
+  color: var(--primary); border-radius: var(--radius-full);
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+}
+
+.question-card-main {
+  padding: 32px; margin-bottom: 20px;
+  border-left: 4px solid var(--primary);
+  background: linear-gradient(135deg, var(--surface) 0%, var(--primary-light) 100%);
+}
+.q-label { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: block; }
+.q-text { font-size: 20px; font-weight: 600; line-height: 1.7; }
+
+.answer-area { min-height: 180px; font-size: 15px; }
+.answer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+
+/* Feedback */
+.feedback-card-new {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  animation: fadeIn 0.3s ease;
+}
+.fb-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.fb-header h3 { font-size: 16px; font-weight: 700; }
+.fb-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; }
+.fb-block { margin-top: 12px; padding: 12px 16px; border-radius: var(--radius); font-size: 13px; }
+.fb-block.good { background: var(--success-light); }
+.fb-block.improve { background: var(--warning-light); }
+.fb-block strong { display: block; margin-bottom: 6px; font-size: 12px; }
+.fb-block ul { padding-left: 20px; }
+.fb-block li { margin-bottom: 4px; line-height: 1.5; }
+
+/* ============ Complete ============ */
+.complete-hero-card { text-align: center; padding: 48px 24px; margin-bottom: 24px; }
+.complete-icon-wrap {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; margin: 0 auto 20px;
+}
+.complete-hero-card h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.avg-label { color: var(--text-secondary); font-size: 14px; }
+
+.review-qa-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+.rqa-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.rqa-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.rqa-q { flex: 1; font-size: 14px; font-weight: 600; line-height: 1.5; }
+.rqa-a { padding: 10px 14px; background: var(--bg); border-radius: var(--radius); margin: 8px 0; font-size: 14px; }
+.rqa-a strong { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+.rqa-fb { padding: 8px 14px; background: var(--primary-light); border-radius: var(--radius); font-size: 13px; line-height: 1.5; }
+
+.complete-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; }
+
+/* ============ AI Avatar ============ */
+.ai-avatar-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 24px; padding: 20px 0 8px;
+}
+
+.ai-avatar {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; box-shadow: 0 4px 24px rgba(99,102,241,0.3);
+  transition: all 0.4s ease;
+}
+
+.ai-avatar-wrap.speaking .ai-avatar {
+  box-shadow: 0 0 30px rgba(99,102,241,0.5), 0 0 60px rgba(139,92,246,0.2);
+  animation: avatarPulse 1.2s ease-in-out infinite;
+}
+
+.ai-avatar-wrap.thinking .ai-avatar {
+  animation: avatarSpin 2s linear infinite;
+}
+
+@keyframes avatarPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes avatarSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ai-face { position: relative; z-index: 1; }
+.ai-eyes { display: flex; gap: 14px; margin-bottom: 8px; }
+.ai-eye {
+  width: 10px; height: 14px; background: #a5b4fc;
+  border-radius: 50%; position: relative;
+  animation: eyeBlink 3s infinite;
+}
+.ai-avatar-wrap.speaking .ai-eye { background: #c4b5fd; height: 16px; }
+.ai-avatar-wrap.thinking .ai-eye { background: #fbbf24; }
+
+@keyframes eyeBlink {
+  0%, 95%, 100% { transform: scaleY(1); }
+  97% { transform: scaleY(0.1); }
+}
+
+.ai-mouth {
+  width: 16px; height: 6px; background: rgba(165,180,252,0.6);
+  border-radius: 0 0 10px 10px; margin: 0 auto;
+  transition: all 0.3s ease;
+}
+.ai-avatar-wrap.speaking .ai-mouth {
+  width: 20px; height: 8px; background: #c4b5fd;
+  animation: mouthTalk 0.3s ease-in-out infinite;
+}
+.ai-avatar-wrap.thinking .ai-mouth {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+@keyframes mouthTalk {
+  0%, 100% { height: 6px; }
+  50% { height: 10px; border-radius: 0 0 8px 8px; }
+}
+
+.ai-glow {
+  position: absolute; inset: -6px; border-radius: 50%;
+  background: transparent;
+  border: 2px solid rgba(99,102,241,0.2);
+}
+.ai-avatar-wrap.speaking .ai-glow {
+  border-color: rgba(139,92,246,0.4);
+}
+
+.ai-name {
+  margin-top: 12px; font-size: 15px; font-weight: 700;
+  color: var(--text);
+}
+
+.ai-status {
+  font-size: 12px; color: var(--text-muted); margin-top: 4px;
+  transition: color 0.3s;
+}
+.ai-avatar-wrap.speaking .ai-status { color: var(--primary); }
+.ai-avatar-wrap.thinking .ai-status { color: #f59e0b; }
+
+/* Waveform */
+.ai-waveform {
+  display: flex; align-items: center; gap: 3px; margin-top: 8px; height: 20px;
+}
+.ai-waveform span {
+  width: 3px; background: var(--primary); border-radius: 2px;
+  animation: wave 0.6s ease-in-out infinite;
+}
+.ai-waveform span:nth-child(1) { height: 12px; animation-delay: 0s; }
+.ai-waveform span:nth-child(2) { height: 18px; animation-delay: 0.1s; }
+.ai-waveform span:nth-child(3) { height: 24px; animation-delay: 0.2s; }
+.ai-waveform span:nth-child(4) { height: 18px; animation-delay: 0.3s; }
+.ai-waveform span:nth-child(5) { height: 12px; animation-delay: 0.4s; }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.5); }
+}
+
+/* ============ Voice Input ============ */
+.answer-label-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+
+.btn-voice {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: var(--radius-full);
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all var(--transition); color: var(--text-secondary);
+}
+.btn-voice:hover { border-color: var(--primary); color: var(--primary); }
+.btn-voice.recording {
+  border-color: #ef4444; background: #fef2f2; color: #dc2626;
+  animation: micPulse 1s ease-in-out infinite;
+}
+
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+}
+
+.mic-icon { font-size: 16px; }
+
+/* Replay button */
+.btn-replay {
+  margin-top: 12px; padding: 4px 12px; border-radius: var(--radius-full);
+  border: 1px solid var(--border); background: var(--bg);
+  font-size: 12px; cursor: pointer; color: var(--text-secondary);
+  transition: all var(--transition);
+}
+.btn-replay:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+
+/* ============ Camera ============ */
+.camera-area { text-align: center; margin-bottom: 12px; }
+.camera-preview { position: relative; display: inline-block; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+.camera-video { width: 160px; height: 120px; object-fit: cover; display: block; border-radius: var(--radius-lg); transform: scaleX(-1); }
+.camera-off { position: absolute; top: 6px; right: 6px; padding: 2px 8px !important; font-size: 12px !important; border-radius: 50% !important; width: 26px; height: 26px; }
+
+@keyframes fadeIn { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);} }
+
+@media (max-width: 768px) {
+  .option-row { grid-template-columns: 1fr; }
+  .interview-topbar { flex-direction: column; align-items: stretch; }
+  .q-text { font-size: 17px; }
+  .ai-avatar { width: 68px; height: 68px; }
+}

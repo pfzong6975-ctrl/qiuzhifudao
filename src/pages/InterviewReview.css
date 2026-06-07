@@ -1,0 +1,121 @@
+/* ============ Review Page ============ */
+.review-page { animation: fadeIn 0.3s ease; }
+
+/* ============ Browse ============ */
+.review-browse { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+.review-list-card { max-height: 600px; overflow: hidden; display: flex; flex-direction: column; }
+
+.review-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0; }
+.review-list-header h2 { font-size: 18px; font-weight: 700; }
+
+.filter-tabs { display: flex; gap: 2px; background: var(--bg-alt); border-radius: var(--radius); padding: 3px; }
+.ftab {
+  padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  cursor: pointer; border: none; background: transparent; color: var(--text-secondary);
+  transition: all var(--transition);
+}
+.ftab.active { background: var(--surface); color: var(--primary); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+.review-list { flex: 1; overflow-y: auto; }
+
+.review-item {
+  padding: 16px; border: 1px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 8px; cursor: pointer; transition: all var(--transition);
+}
+.review-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+.review-item.in_progress { border-left: 3px solid var(--warning); }
+.review-item.completed { border-left: 3px solid var(--success); }
+
+.ri-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.ri-type { font-size: 14px; font-weight: 600; }
+.ri-status { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-full); }
+.ri-status.completed { background: var(--success-light); color: #065f46; }
+.ri-status.in_progress { background: var(--warning-light); color: #92400e; }
+
+.ri-meta { display: flex; gap: 14px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; align-items: center; }
+.ri-date { margin-left: auto; }
+
+.review-empty-hint { display: flex; align-items: center; justify-content: center; min-height: 300px; }
+
+/* ============ Detail ============ */
+.review-detail { animation: fadeIn 0.3s ease; }
+
+.detail-header-card { margin: 16px 0 24px; }
+.dh-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.dh-row h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.dh-meta { font-size: 14px; color: var(--text-secondary); }
+
+.status-badge { padding: 6px 16px; border-radius: var(--radius-full); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.status-badge.completed { background: var(--success-light); color: #065f46; }
+.status-badge.in_progress { background: var(--warning-light); color: #92400e; }
+
+/* Generate review card */
+.gen-review-card { text-align: center; padding: 48px 24px; margin-bottom: 24px; }
+.gen-review-card h3 { font-size: 20px; margin-bottom: 8px; }
+.gen-review-card p { color: var(--text-secondary); margin-bottom: 24px; }
+
+/* ============ Review Content ============ */
+.review-content > * { margin-bottom: 24px; }
+
+.score-card { margin-bottom: 24px; }
+.score-row { display: flex; align-items: center; gap: 24px; }
+.score-row h2 { font-size: 20px; margin-bottom: 6px; }
+.score-row p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+.rc-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+
+.rc-list { list-style: none; }
+.rc-list li { padding: 8px 0 8px 24px; position: relative; font-size: 14px; line-height: 1.6; }
+.rc-list.good li::before { content:'✅'; position:absolute; left:0; }
+.rc-list.bad li::before { content:'⚠️'; position:absolute; left:0; }
+
+/* Per-question review */
+.qr-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+.qr-item:last-child { margin-bottom: 0; }
+.qr-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.qr-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.qr-qtext { flex: 1; font-size: 14px; font-weight: 600; line-height: 1.5; }
+.qr-ans, .qr-eval, .qr-model { margin-top: 10px; padding: 12px 14px; border-radius: var(--radius); font-size: 13px; line-height: 1.6; }
+.qr-ans { background: var(--bg); }
+.qr-eval { background: var(--primary-light); }
+.qr-model { background: var(--success-light); border: 1px solid #a7f3d0; }
+.qr-ans strong, .qr-eval strong, .qr-model strong { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+.qr-model strong { color: #065f46; }
+
+/* Improvement list */
+.imp-list { list-style: none; }
+.imp-list li { padding: 12px 16px; margin-bottom: 8px; background: var(--bg); border-radius: var(--radius); font-size: 14px; line-height: 1.6; border-left: 3px solid var(--primary); }
+.imp-list.long li { border-left-color: var(--success); }
+
+/* Takeaways */
+.takeaways { display: flex; flex-direction: column; gap: 12px; }
+.takeaway { display: flex; gap: 14px; align-items: flex-start; }
+.ta-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary-light); color: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.takeaway p { font-size: 14px; line-height: 1.6; padding-top: 4px; }
+
+/* Raw Q&A */
+.raw-qa { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.raw-qa:last-child { border-bottom: none; }
+.raw-q { font-size: 14px; font-weight: 600; margin-bottom: 6px; line-height: 1.5; }
+.raw-a { font-size: 14px; color: var(--text-secondary); line-height: 1.6; padding-left: 20px; }
+.raw-eval { margin-top: 6px; padding-left: 20px; font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+
+@keyframes fadeIn { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);} }
+
+@media (max-width: 768px) {
+  .review-browse { grid-template-columns: 1fr; }
+  .score-row { flex-direction: column; text-align: center; }
+  .dh-row { flex-direction: column; gap: 10px; }
+  .review-list-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+}
