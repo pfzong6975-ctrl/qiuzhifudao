@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: job-seek
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: NODE_ENV=production node server.js
+    plan: free
