@@ -163,13 +163,13 @@ app.get('/api/self-intro/history', (req, res) => res.json(db.list('self_intros')
 
 app.post('/api/interview/start', async (req, res) => {
   const k = requireKey(res); if (!k) return;
-  const { type='综合', language='中文', questionCount=5, followUpMode=false, persona } = req.body;
+  const { type='综合', language='中文', questionCount=5, followUpMode=false, persona, jdContent } = req.body;
   try {
-    const r = await ai.generateInterviewQuestion(k, type, language, 1, questionCount, [], followUpMode, persona, getUrl());
+    const r = await ai.generateInterviewQuestion(k, type, language, 1, questionCount, [], followUpMode, persona, jdContent, getUrl());
     const id = db.insert('interviews', {
       type, language, question_count: questionCount, follow_up_mode: followUpMode,
       status:'in_progress', current_question:1, qa_list: JSON.stringify([{question:r.next_question,answer:'',evaluation:null}]), review:null, score:null,
-      persona: persona ? JSON.stringify(persona) : null
+      persona: persona ? JSON.stringify(persona) : null, jd_content: jdContent || ''
     });
     res.json({ sessionId: id, question: r.next_question, questionNumber:1, totalQuestions: followUpMode ? 99 : questionCount });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -191,7 +191,7 @@ app.post('/api/interview/:id/answer', async (req, res) => {
   try {
     const persona = s.persona ? JSON.parse(s.persona) : null;
     const r = await ai.generateInterviewQuestion(k, s.type, s.language,
-      isLast ? s.current_question : s.current_question+1, s.question_count, qa, s.follow_up_mode, persona, getUrl());
+      isLast ? s.current_question : s.current_question+1, s.question_count, qa, s.follow_up_mode, persona, s.jd_content, getUrl());
 
     if (r.evaluation) qa[qa.length-1].evaluation = r.evaluation;
 

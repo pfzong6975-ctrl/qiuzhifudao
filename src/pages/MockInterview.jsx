@@ -95,6 +95,7 @@ export default function MockInterview() {
   const [interviewerConfig, setInterviewerConfig] = useState(null);
   const [interviewerPersona, setInterviewerPersona] = useState(null);
   const [followUpMode, setFollowUpMode] = useState(false);
+  const [jdContent, setJdContent] = useState('');
   const answerRef = useRef(null);
 
   const { listening, supported, startListening, stopListening } = useSpeechRecognition(language);
@@ -116,7 +117,7 @@ export default function MockInterview() {
   async function handleStart() {
     setLoading(true); setError('');
     try {
-      const d = await startInterview(type, language, questionCount, followUpMode, interviewerPersona);
+      const d = await startInterview(type, language, questionCount, followUpMode, interviewerPersona, jdContent);
       setSessionId(d.sessionId); setCurrentQ(d.question);
       setQNum(1); setTotal(d.totalQuestions);
       setHistory([]); setFeedback(null);
@@ -202,6 +203,12 @@ export default function MockInterview() {
               <input type="range" min="3" max="10" value={questionCount}
                 onChange={e=>setQuestionCount(Number(e.target.value))} className="range-input" />
               <div className="range-labels"><span>3</span><span>5</span><span>7</span><span>10</span></div>
+            </div>
+
+            <div className="form-group">
+              <label className="label">岗位描述 JD（可选，粘贴后 AI 针对性提问）</label>
+              <textarea className="textarea" rows={4} placeholder="粘贴目标岗位的完整 JD，AI 会根据职责要求、技能要求等定制面试题..."
+                value={jdContent} onChange={e=>setJdContent(e.target.value)} />
             </div>
 
             <div className="form-group">

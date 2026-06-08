@@ -40,7 +40,7 @@ export const evaluateSelfIntro = (introText, language) => request('/self-intro/e
 export const getSelfIntroHistory = () => request('/self-intro/history');
 
 // Interview
-export const startInterview = (type, language, questionCount, followUpMode, persona) => request('/interview/start', { method:'POST', body: JSON.stringify({type, language, questionCount, followUpMode, persona}) });
+export const startInterview = (type, language, questionCount, followUpMode, persona, jdContent) => request('/interview/start', { method:'POST', body: JSON.stringify({type, language, questionCount, followUpMode, persona, jdContent}) });
 export const submitAnswer = (sessionId, answer) => request('/interview/'+sessionId+'/answer', { method:'POST', body: JSON.stringify({answer}) });
 export const getInterviewSessions = () => request('/interview/sessions');
 export const getInterviewSession = (id) => request('/interview/'+id);

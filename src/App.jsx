@@ -43,6 +43,7 @@ export default function App() {
   const [showApiModal, setShowApiModal] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState('');
   const [baseUrlInput, setBaseUrlInput] = useState('');
+  const [modelInput, setModelInput] = useState('');
   const [saving, setSaving] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('jobseek-theme') || 'dark');
   const navigate = useNavigate();
@@ -57,14 +58,14 @@ export default function App() {
 
   useEffect(() => { checkApiKey(); }, []);
   async function checkApiKey() {
-    try { const d = await getApiKeyStatus(); setHasApiKey(d.hasKey); if (d.baseUrl) setBaseUrlInput(d.baseUrl); } catch { setHasApiKey(false); }
+    try { const d = await getApiKeyStatus(); setHasApiKey(d.hasKey); if (d.baseUrl) setBaseUrlInput(d.baseUrl); if (d.model) setModelInput(d.model); if (!d.hasKey) setShowApiModal(true); } catch { setHasApiKey(false); setShowApiModal(true); }
   }
   async function saveApiKey() {
     if (!apiKeyInput.trim()) return;
     setSaving(true);
     try {
-      await fetch('/api/settings/api-key', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ apiKey:apiKeyInput.trim(), baseUrl:baseUrlInput.trim() }) });
-      setHasApiKey(true); setShowApiModal(false); setApiKeyInput('');
+      await fetch('/api/settings/api-key', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ apiKey:apiKeyInput.trim(), baseUrl:baseUrlInput.trim(), model:modelInput.trim() }) });
+      setHasApiKey(true); setShowApiModal(false); setApiKeyInput(''); setBaseUrlInput('');
     } catch(e){}
     setSaving(false);
   }
@@ -144,14 +145,33 @@ export default function App() {
 
       {/* API Key Modal */}
       {showApiModal && (
-        <div className="modal-overlay" onClick={() => setShowApiModal(false)}>
+        <div className="modal-overlay" onClick={() => { if (hasApiKey) setShowApiModal(false); }}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <h2>🔑 设置 API Key</h2>
-            <p className="modal-desc">支持 <strong>DeepSeek</strong> 和 <strong>Anthropic Claude</strong>，自动识别 Key 格式</p>
+            <p className="modal-desc">支持 DeepSeek / MiniMax / Claude</p>
+            <label className="label" style={{marginBottom:4}}>API 提供商</label>
+            <select className="input" style={{marginBottom:12}} value={
+              baseUrlInput.includes('minimax') ? 'minimax' :
+              baseUrlInput.includes('anthropic') ? 'claude' :
+              baseUrlInput ? 'custom' : 'deepseek'
+            } onChange={e => {
+              const v = e.target.value;
+              if (v==='deepseek') setBaseUrlInput('');
+              else if (v==='minimax') setBaseUrlInput('https://api.minimax.chat/v1/chat/completions');
+              else if (v==='claude') setBaseUrlInput('');
+              else setBaseUrlInput('');
+            }}>
+              <option value="deepseek">DeepSeek</option>
+              <option value="minimax">MiniMax</option>
+              <option value="claude">Anthropic Claude</option>
+              <option value="custom">自定义</option>
+            </select>
             <label className="label">API Key</label>
             <input type="password" className="input" placeholder="sk-..." value={apiKeyInput} onChange={e=>setApiKeyInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&saveApiKey()} />
             <label className="label" style={{marginTop:12}}>API 地址（可选）</label>
             <input type="text" className="input" placeholder="默认自动匹配" value={baseUrlInput} onChange={e=>setBaseUrlInput(e.target.value)} />
+            <label className="label" style={{marginTop:12}}>模型名称（可选）</label>
+            <input type="text" className="input" placeholder="默认自动匹配" value={modelInput} onChange={e=>setModelInput(e.target.value)} />
             <div className="modal-actions">
               <button className="btn btn-secondary" onClick={()=>setShowApiModal(false)}>取消</button>
               <button className="btn btn-primary" onClick={saveApiKey} disabled={saving||!apiKeyInput.trim()}>{saving?'保存中...':'保存'}</button>

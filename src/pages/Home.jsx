@@ -13,12 +13,12 @@ export default function Home({ hasApiKey }) {
   async function loadStats() {
     try {
       const [resumes, interviews] = await Promise.allSettled([getResumeHistory(), getInterviewSessions()]);
-      if (resumes.status === 'fulfilled') setRecentResumes(resumes.value.slice(0, 3));
-      if (interviews.status === 'fulfilled') {
+      if (resumes.status === 'fulfilled' && Array.isArray(resumes.value)) setRecentResumes(resumes.value.slice(0, 3));
+      if (interviews.status === 'fulfilled' && Array.isArray(interviews.value)) {
         setRecentInterviews(interviews.value.slice(0, 3));
         const completed = interviews.value.filter(i => i.status==='completed');
         const avg = completed.length>0 ? Math.round(completed.reduce((s,i)=>s+(i.score||0),0)/completed.length) : 0;
-        setStats({ resumes: resumes.status==='fulfilled'?resumes.value.length:0, interviews: interviews.value.length, completed: completed.length, avgScore: avg });
+        setStats({ resumes: resumes.status==='fulfilled'&&Array.isArray(resumes.value)?resumes.value.length:0, interviews: interviews.value.length, completed: completed.length, avgScore: avg });
       }
     } catch {}
   }

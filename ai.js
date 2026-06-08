@@ -59,25 +59,46 @@ function safeJson(text) {
 // ============ 1. Resume Analysis (Targeted for a job) ============
 
 function getTargetedResumePrompt(jobTitle, jobDescription) {
-  return `You are an expert resume writer and career coach. A candidate is applying for the position of "${jobTitle}".
+  return `You are an expert resume writer. A candidate is applying for "${jobTitle}".
 
 ${jobDescription ? `Job Description:\n${jobDescription}\n` : ''}
 
-Your task:
-1. Rewrite and optimize the candidate's resume to maximize their chances of getting this specific job
-2. Highlight relevant experience and skills that match the job requirements
-3. Add missing industry keywords naturally
-4. Use powerful action verbs and quantify achievements
-5. Keep the same factual information but make it more impactful
+Rewrite their resume to maximize hiring chances. The optimized_resume field MUST be a fully formatted resume following this EXACT structure:
+
+【个人信息】
+姓名 | 电话 | 邮箱 | 所在城市 | 求职意向：${jobTitle}
+
+【个人优势】
+一段3-4行的专业自我评价，突出核心竞争力和与目标岗位的匹配度
+
+【工作经历】
+公司名称 | 职位 | 时间范围
+- 用 STAR 法则描述工作内容，每条以动词开头（负责/主导/搭建/优化/推动）
+- 每条必须包含量化数据（提升了X%、节省Y万、带来Z用户）
+- 每个经历写3-4条 bullet points
+
+【项目经验】
+项目名称 | 角色 | 时间
+- 项目简介一句话
+- 技术栈/方法论
+- 个人贡献和量化成果
+
+【教育背景】
+学校名称 | 专业 | 学历 | 毕业时间 | GPA（如果突出）
+
+【技能】
+- 技术技能：列出具体技术栈
+- 语言能力：列出具体语言和水平
+- 证书/资质
 
 Respond ONLY with JSON:
 {
-  "match_score": <1-100 - how well the original resume matches this job>,
-  "optimized_resume": "<the full rewritten resume text>",
-  "key_changes": ["<change 1>", "<change 2>", ...],
+  "match_score": <1-100>,
+  "optimized_resume": "<the complete formatted resume following the structure above, use real line breaks and proper spacing>",
+  "key_changes": ["<what was changed>", ...],
   "keywords_added": ["<keyword>", ...],
-  "highlighted_experience": "<which parts of the original experience are most relevant>",
-  "gap_notes": "<what's missing from the resume for this job>"
+  "highlighted_experience": "<most relevant experience>",
+  "gap_notes": "<missing elements>"
 }`;
 }
 
@@ -158,14 +179,15 @@ Last: {"evaluation":{...},"next_question":"<closing>","is_last":true}
 For follow-up mode: if answer is weak, ask a follow-up on the SAME topic instead of moving to next question. Set is_last:false and make next_question a deeper probe.`;
 }
 
-async function generateInterviewQuestion(apiKey, type, language, qNum, total, qaList, followUpMode, persona, baseUrl) {
+async function generateInterviewQuestion(apiKey, type, language, qNum, total, qaList, followUpMode, persona, jdContent, baseUrl) {
   const isFirst = !qaList || qaList.length === 0;
   const isLast = !followUpMode && qNum >= total;
   const ctx = isFirst ? 'First question.' : qaList.map((q,i) => `Q${i+1}: ${q.question}\nA${i+1}: ${q.answer}`).join('\n');
   const mode = followUpMode ? 'FOLLOW-UP MODE: If the answer is weak or shallow, ask a probing follow-up instead of moving on.' : 'STANDARD MODE.';
   const personaPrompt = persona?.prompt ? `\n\nINTERVIEWER PERSONA: ${persona.prompt}\nAdapt your tone, style, and question selection to match this persona exactly.` : '';
+  const jdPrompt = jdContent ? `\n\nJOB DESCRIPTION:\n${jdContent}\n\nTailor all interview questions to this specific job. Ask about the required skills, responsibilities, and scenarios mentioned in the JD.` : '';
   return safeJson(await callAI(apiKey, getInterviewPrompt(),
-    `${mode}\n${type} | ${language} | Q${qNum}/${total}\n\n${ctx}${personaPrompt}\n\n${isFirst?'Generate Q1.':isLast?'Evaluate (FINAL question).':'Evaluate + next question.'}`, 2048, baseUrl));
+    `${mode}\n${type} | ${language} | Q${qNum}/${total}\n\n${ctx}${jdPrompt}${personaPrompt}\n\n${isFirst?'Generate Q1.':isLast?'Evaluate (FINAL question).':'Evaluate + next question.'}`, 2048, baseUrl));
 }
 
 // ============ 7. Interview Review ============
@@ -246,7 +268,13 @@ ${dataStr}
 
 必须严格用JSON格式回复，不要输出任何其他文字：
 {"message":"你的回复和下一个问题","collected":{},"phase":"personal","is_complete":false,"resume":""}
-全部阶段完成后设is_complete为true，resume放完整简历文本。`;
+全部阶段完成后设is_complete为true，resume字段放完整简历文本，必须包含以下格式：
+【个人信息】姓名 | 电话 | 邮箱 | 城市 | 求职意向
+【个人优势】3-4行专业自我评价
+【工作经历】公司 | 职位 | 时间 + 3-4条STAR法则bullet points（动词开头、量化数据）
+【项目经验】项目名 | 角色 | 时间 + 技术栈 + 个人贡献和量化成果
+【教育背景】学校 | 专业 | 学历 | 毕业时间
+【技能】技术栈、语言、证书`;
 }
 
 async function resumeChat(apiKey, messages, collectedInfo, baseUrl) {

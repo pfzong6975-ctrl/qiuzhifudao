@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ResumeChat.css';
 
@@ -8,6 +8,33 @@ export default function ResumeChat() {
   const [loading, setLoading] = useState(false);
   const [collected, setCollected] = useState({});
   const [phase, setPhase] = useState('');
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef(null);
+
+  // Speech recognition
+  useEffect(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      const rec = new SR();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = 'zh-CN';
+      rec.onresult = (e) => {
+        let t = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+        setInput(prev => prev + t);
+      };
+      rec.onerror = () => setListening(false);
+      rec.onend = () => setListening(false);
+      recognitionRef.current = rec;
+    }
+  }, []);
+
+  function toggleMic() {
+    if (!recognitionRef.current) return;
+    if (listening) { recognitionRef.current.stop(); setListening(false); }
+    else { try { recognitionRef.current.start(); setListening(true); } catch {} }
+  }
   const [done, setDone] = useState(false);
   const chatRef = useRef(null);
   const inputRef = useRef(null);
@@ -178,10 +205,16 @@ export default function ResumeChat() {
 
         {!done && (
           <form className="rc-input-bar" onSubmit={handleSend}>
+            {recognitionRef.current && (
+              <button type="button" className={`btn btn-sm ${listening ? 'btn-danger' : 'btn-secondary'}`}
+                onClick={toggleMic} title={listening ? '停止录音' : '语音输入'}>
+                {listening ? '🔴' : '🎤'}
+              </button>
+            )}
             <input
               ref={inputRef}
               className="rc-input"
-              placeholder={loading ? 'AI 正在回复...' : '输入你的回答... (输入"跳过"可跳过当前环节)'}
+              placeholder={loading ? 'AI 正在回复...' : listening ? '🎤 正在聆听...' : '输入你的回答... (输入"跳过"可跳过当前环节)'}
               value={input}
               onChange={e => setInput(e.target.value)}
               disabled={loading}
